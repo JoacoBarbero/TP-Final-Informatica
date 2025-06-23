@@ -166,21 +166,11 @@ def cargar_producto_cafeteria():
 def ver_y_actualizar_pedidos_cafeteria():
     """Permite a la cafetería ver y actualizar el estado de los pedidos."""
     try:
-        response = requests.get(f"{BASE_URL}/productos") # Usamos productos para buscar pedidos asociados
-        if response.status_code != 200:
-            mostrar_respuesta(response)
-            return
-
-        productos_cafeteria = [p for p in response.json() if p['cafeteria_id'] == usuario_actual['id']]
-        if not productos_cafeteria:
-            print("⚠️ No tienes productos registrados ni pedidos asociados a tu cafetería.")
-            return
-
-        response_all_pedidos = requests.get(f"{BASE_URL}/pedidos/{usuario_actual['id']}") # Endpoint genérico de pedidos
+        # ... (código existente para listar productos de la cafetería, si aplica) ...
 
         print("\n⚠️ Esta función asume que conoces el ID de los pedidos a actualizar.")
         print("Actualmente, el backend no expone un listado de pedidos específico para cafeterías.")
-        
+
         opcion = input("¿Desea actualizar un pedido existente? (s/n): ").lower()
         if opcion == 's':
             pedido_id = input("ID del pedido a actualizar: ")
@@ -188,7 +178,14 @@ def ver_y_actualizar_pedidos_cafeteria():
             if estado not in ["pendiente", "completado", "cancelado"]:
                 print("Estado inválido. Debe ser 'pendiente', 'completado' o 'cancelado'.")
                 return
-            data = {"estado": estado}
+            
+            # --- MODIFICACIÓN AQUÍ ---
+            data = {
+                "estado": estado,
+                "cafeteria_id_solicitante": usuario_actual["id"] # ¡Añadir esta línea!
+            }
+            # -------------------------
+
             try:
                 response = requests.put(f"{BASE_URL}/pedido/{pedido_id}", json=data)
                 mostrar_respuesta(response)
