@@ -162,7 +162,7 @@ def cargar_producto_cafeteria():
         mostrar_respuesta(response)
     except requests.exceptions.ConnectionError:
         print("❌ Error de conexión con el servidor.")
-
+#Cambio por error en sintaxis en la función ver_y_actualizar_pedidos_cafeteria
 def ver_y_actualizar_pedidos_cafeteria():
     """Permite a la cafetería ver y actualizar el estado de los pedidos."""
     try:
